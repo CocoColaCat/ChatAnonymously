@@ -517,8 +517,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 初始化 Socket.IO
-            const socket = io('http://localhost:3000');
+            // 初始化 Socket.IO（替換為您的 Render 後端 URL）
+            const socket = io('https://anonymous-chat-backend.onrender.com'); // TODO: 更新為實際 Render URL
 
             // 元素
             const welcomeModal = document.getElementById('welcome-modal');
@@ -557,7 +557,7 @@
             };
 
             // 冷卻時間
-            const cooldownTime = 3000; // 3秒冷卻時間
+            const cooldownTime = 3000;
             let cooldownTimer = null;
 
             // 字數計數器
@@ -725,7 +725,7 @@
             });
 
             // 接收聊天訊息
-            socket.on('chat-message', ({ sender, text, isUser }) => {
+            socket.on('chat-message', ({ sender, text }) => {
                 addMessage(sender, text, sender === userData.nickname);
             });
 
