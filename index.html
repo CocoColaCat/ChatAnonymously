@@ -5,97 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>匿名聊 - 自由聊天空間</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
         
         body {
             font-family: 'Noto Sans TC', sans-serif;
-            transition: background 0.5s ease;
-        }
-        
-        .bg-space {
-            background-color: #000000;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 0),
-                             radial-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 0);
-            background-size: 50px 50px, 30px 30px;
-            background-position: 0 0, 25px 25px;
-            background-attachment: fixed;
-        }
-        
-        .bg-geometric {
             background-color: #4158D0;
             background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
             background-attachment: fixed;
-        }
-        
-        .bg-tech {
-            background-color: #0f172a;
-            background-image: 
-                linear-gradient(rgba(59, 130, 246, 0.2) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(59, 130, 246, 0.2) 1px, transparent 1px);
-            background-size: 30px 30px;
+            transition: background-image 0.5s ease;
             position: relative;
             overflow: hidden;
-        }
-        
-        .tech-circuit {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background-image: 
-                radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.3) 1px, transparent 1px),
-                radial-gradient(circle at 75% 75%, rgba(59, 130, 246, 0.3) 1px, transparent 1px);
-            background-size: 60px 60px;
-            z-index: 1;
-        }
-        
-        .bg-nature {
-            background: linear-gradient(to bottom, #2e7d32, #1b5e20);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .nature-overlay {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath fill='%23ffffff' fill-opacity='0.1' d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z'%3E%3C/path%3E%3C/svg%3E");
-            z-index: 1;
-        }
-        
-        .bg-neon {
-            background-color: #0f0f1a;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .neon-grid {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(255, 0, 255, 0.2) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 255, 0.2) 1px, transparent 1px);
-            background-size: 40px 40px;
-            perspective: 1000px;
-            transform-style: preserve-3d;
-            transform: rotateX(60deg);
-            z-index: 1;
-        }
-        
-        .neon-glow {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(255, 0, 255, 0.3) 0%, rgba(0, 255, 255, 0.3) 50%, transparent 100%);
-            z-index: 2;
         }
         
         .chat-container {
@@ -138,102 +58,87 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        .settings-panel {
-            position: fixed;
-            top: 0;
-            right: -320px;
-            width: 320px;
-            height: 100vh;
-            transition: right 0.3s ease;
-            z-index: 1000;
-            overflow-y: auto;
-        }
-        
-        .settings-panel.open {
-            right: 0;
-        }
-        
-        .bg-option {
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        
-        .bg-option:hover {
-            transform: scale(1.05);
-        }
-        
-        .bg-option.active {
-            border: 3px solid #3b82f6;
-        }
-        
-        .star {
-            position: absolute;
-            background-color: white;
-            border-radius: 50%;
-            animation: twinkle 4s infinite;
-        }
-        
-        @keyframes twinkle {
-            0% { opacity: 0.2; }
-            50% { opacity: 1; }
-            100% { opacity: 0.2; }
-        }
-        
-        .welcome-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .welcome-content {
-            max-width: 90%;
-            width: 450px;
-            animation: scaleIn 0.3s ease;
-        }
-        
-        @keyframes scaleIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        
-        .rule-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-        
-        .rule-number {
+        .emoji-btn {
             background-color: rgba(255, 255, 255, 0.2);
-            width: 24px;
-            height: 24px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 10px;
-            flex-shrink: 0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-right: 8px;
         }
         
-        .char-counter {
-            font-size: 12px;
-            text-align: right;
-            margin-top: 4px;
-            color: rgba(255, 255, 255, 0.7);
+        .emoji-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
         }
         
-        .char-counter.limit {
-            color: #ef4444;
+        .emoji-picker {
+            position: absolute;
+            bottom: 70px;
+            left: 10px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            padding: 10px;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 5px;
+            z-index: 100;
+            animation: fadeIn 0.2s ease;
         }
         
-        .alert-modal {
+        .emoji {
+            font-size: 1.5rem;
+            cursor: pointer;
+            text-align: center;
+            padding: 5px;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+        
+        .emoji:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+        
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #6b7280;
+            border-radius: 50%;
+            margin-right: 3px;
+            animation: typingAnimation 1.5s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typingAnimation {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+        
+        .modal {
             position: fixed;
             top: 0;
             left: 0;
@@ -243,154 +148,354 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 3000;
+            z-index: 1000;
             animation: fadeIn 0.3s ease;
         }
         
-        .alert-content {
-            max-width: 90%;
-            width: 350px;
-            animation: scaleIn 0.3s ease;
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
         
-        .alert-icon {
-            width: 50px;
-            height: 50px;
-            background-color: #fef2f2;
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        
+        .loading-balls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .loading-ball {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin: 0 8px;
+            animation: bounce 0.8s infinite alternate;
+        }
+        
+        .loading-ball:nth-child(1) {
+            background-color: #3b82f6;
+            animation-delay: 0s;
+        }
+        
+        .loading-ball:nth-child(2) {
+            background-color: #8b5cf6;
+            animation-delay: 0.2s;
+        }
+        
+        .loading-ball:nth-child(3) {
+            background-color: #ec4899;
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-20px); }
+        }
+        
+        .message-options {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 16px;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.1);
         }
         
-        .alert-icon svg {
-            color: #ef4444;
-        }
-        
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-        
-        .shake {
-            animation: shake 0.5s ease;
-        }
-        
-        .btn-disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .cooldown-container {
-            position: relative;
-            height: 4px;
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
+        .options-menu {
+            position: absolute;
+            top: 30px;
+            right: 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
             overflow: hidden;
-            margin-top: 8px;
+        }
+        
+        .option-item {
+            padding: 8px 15px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background-color 0.2s;
+        }
+        
+        .option-item:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .reply-container {
+            background-color: rgba(0, 0, 0, 0.05);
+            border-left: 3px solid #8b5cf6;
+            padding: 5px 10px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        
+        .reply-container .reply-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+        
+        .reply-container .reply-sender {
+            font-weight: 500;
+            margin-right: 5px;
+        }
+        
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            margin-top: 5px;
+            cursor: pointer;
+        }
+        
+        .image-message {
+            max-width: 250px;
+            border-radius: 8px;
+            margin-top: 5px;
+            cursor: pointer;
+        }
+        
+        .upload-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-right: 8px;
+        }
+        
+        .upload-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .file-input {
             display: none;
         }
         
-        .cooldown-bar {
+        .settings-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .settings-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .tab-button {
+            padding: 10px 15px;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .tab-button.active {
+            background-color: white;
+            color: #4f46e5;
+            font-weight: 500;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 15px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .bg-option {
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: transform 0.2s;
+            position: relative;
+            overflow: hidden;
+            padding: 10px;
+            border: 2px solid transparent;
+        }
+        
+        .bg-option:hover {
+            transform: scale(1.02);
+        }
+        
+        .bg-option.selected {
+            border-color: #4f46e5;
+        }
+        
+        .bg-preview {
+            width: 100%;
+            height: 60px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+        }
+        
+        .bg-name {
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        /* 星空背景 */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            50% { opacity: 1; }
+            100% { opacity: 0.2; }
+        }
+        
+        .char-counter {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: right;
+            margin-top: 2px;
+        }
+        
+        .cooldown-overlay {
             position: absolute;
             top: 0;
             left: 0;
-            height: 100%;
             width: 100%;
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
-            background-size: 200% 100%;
-            animation: gradientMove 2s linear infinite;
-            transform-origin: left;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            z-index: 10;
         }
         
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
+        .cooldown-text {
+            color: white;
+            font-weight: 500;
+        }
+        
+        .welcome-rules {
+            line-height: 1.6;
+        }
+        
+        .welcome-rules li {
+            margin-bottom: 8px;
+        }
+        
+        .input-container {
+            position: relative;
+        }
+        
+        .send-btn-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-purple-600 to-blue-500 min-h-screen">
-    <!-- 歡迎提示框 -->
-    <div id="welcome-modal" class="welcome-modal">
-        <div class="welcome-content glass-panel p-6">
-            <h2 class="text-2xl font-bold text-white text-center mb-4">歡迎使用匿名聊</h2>
-            <p class="text-white text-center mb-6">請遵守以下規則</p>
-            
-            <div class="space-y-4 mb-6">
-                <div class="rule-item">
-                    <div class="rule-number">
-                        <span class="text-white text-sm">1</span>
-                    </div>
-                    <p class="text-white">禁止在聊天室打廣告或者發布暴力、血腥、色情內容</p>
-                </div>
-                
-                <div class="rule-item">
-                    <div class="rule-number">
-                        <span class="text-white text-sm">2</span>
-                    </div>
-                    <p class="text-white">請勿在聊天室內洗版</p>
-                </div>
-                
-                <div class="rule-item">
-                    <div class="rule-number">
-                        <span class="text-white text-sm">3</span>
-                    </div>
-                    <p class="text-white">聊得開心</p>
-                </div>
+<body>
+    <!-- 星空背景 -->
+    <div id="stars" class="stars hidden"></div>
+    
+    <!-- 歡迎規則彈窗 -->
+    <div id="welcome-modal" class="modal">
+        <div class="modal-content">
+            <h2 class="text-xl font-bold text-gray-800 mb-4 text-center">歡迎使用匿名聊</h2>
+            <div class="welcome-rules text-gray-700 mb-6">
+                <p class="mb-2">請遵守以下規則：</p>
+                <ol class="list-decimal pl-5">
+                    <li>禁止在聊天室打廣告或者發布暴力、血腥、色情內容</li>
+                    <li>請勿在聊天室內洗版</li>
+                    <li>聊得開心</li>
+                </ol>
             </div>
-            
-            <button id="agree-btn" class="w-full bg-white text-purple-600 font-bold py-3 px-6 rounded-lg hover:bg-opacity-90 transition-all">
-                我同意
-            </button>
-        </div>
-    </div>
-
-    <!-- 警告通知 -->
-    <div id="alert-modal" class="alert-modal hidden">
-        <div class="alert-content glass-panel p-6">
-            <div class="alert-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
+            <div class="flex justify-center">
+                <button id="accept-rules-btn" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium">我同意</button>
             </div>
-            <h3 class="text-xl font-bold text-white text-center mb-2">警告</h3>
-            <p id="alert-message" class="text-white text-center mb-6">請檢查輸入內容</p>
-            <button id="alert-close-btn" class="w-full bg-white text-purple-600 font-bold py-2 px-6 rounded-lg hover:bg-opacity-90 transition-all">
-                我知道了
-            </button>
+        </div>
+    </div>
+    
+    <!-- 暱稱設定彈窗 -->
+    <div id="nickname-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">設定您的暱稱</h2>
+            <p class="text-gray-600 mb-4">在開始聊天前，請先設定一個獨特的暱稱（最多15個字）。</p>
+            <input type="text" id="nickname-input" placeholder="輸入暱稱..." maxlength="15"
+                class="w-full p-2 border border-gray-300 rounded-lg mb-1 focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <div class="char-counter text-gray-500 text-right mb-4"><span id="nickname-char-count">0</span>/15</div>
+            <div class="flex justify-end">
+                <button id="save-nickname-btn" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">開始聊天</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 連接伺服器畫面 -->
+    <div id="loading-screen" class="modal hidden">
+        <div class="modal-content bg-white/80 backdrop-blur-md">
+            <div class="loading-container">
+                <div class="loading-balls">
+                    <div class="loading-ball"></div>
+                    <div class="loading-ball"></div>
+                    <div class="loading-ball"></div>
+                </div>
+                <p class="text-gray-700 font-medium">正在連接到伺服器...</p>
+            </div>
         </div>
     </div>
 
-    <!-- 暱稱選擇畫面 -->
-    <div id="nickname-screen" class="flex items-center justify-center min-h-screen p-4 hidden">
-        <div class="glass-panel p-8 w-full max-w-md text-center">
-            <h1 class="text-3xl font-bold text-white mb-6">匿名聊</h1>
-            <p class="text-white mb-6">選擇一個暱稱開始聊天</p>
-            <input type="text" id="nickname-input" placeholder="輸入暱稱..." maxlength="30"
-                class="w-full p-3 rounded-lg mb-2 bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50">
-            <div id="nickname-counter" class="char-counter mb-4">0/30</div>
-            <button id="start-chat-btn" 
-                class="w-full bg-white text-purple-600 font-bold py-3 px-6 rounded-lg hover:bg-opacity-90 transition-all">
-                開始聊天
-            </button>
-        </div>
-    </div>
-
-    <!-- 聊天介面 -->
-    <div id="chat-screen" class="hidden flex flex-col h-screen">
+    <!-- 主聊天界面 -->
+    <div id="chat-interface" class="container mx-auto h-screen flex flex-col hidden">
         <!-- 頂部導航 -->
         <div class="flex justify-between items-center p-4 glass-panel m-2 rounded-lg">
-            <div class="flex items-center">
-                <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
-                <h1 class="text-xl font-bold text-white">匿名聊</h1>
+            <div>
+                <h2 class="text-white font-medium">匿名聊</h2>
+                <p class="text-white/70 text-sm">線上人數：42</p>
             </div>
             <div class="flex items-center">
-                <span id="user-nickname" class="text-white mr-3"></span>
-                <button id="settings-btn" class="text-white hover:bg-white/20 p-2 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <span id="current-nickname" class="text-white text-sm bg-purple-600 px-2 py-1 rounded-full mr-2">訪客</span>
+                <button id="settings-btn" class="settings-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
@@ -408,423 +513,520 @@
             </div>
         </div>
 
+        <!-- 回覆預覽 -->
+        <div id="reply-preview" class="mx-4 glass-panel p-2 rounded-lg hidden">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white/70 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                    </svg>
+                    <span id="reply-to" class="text-sm text-white/90">回覆給</span>
+                </div>
+                <button id="cancel-reply" class="text-white/70 hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 圖片預覽 -->
+        <div id="image-preview-container" class="mx-4 glass-panel p-2 rounded-lg hidden">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-sm text-white/90">圖片預覽</span>
+                <button id="cancel-image" class="text-white/70 hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <img id="image-preview" class="image-preview" src="" alt="預覽圖片">
+        </div>
+
         <!-- 輸入框 -->
-        <div class="p-4">
-            <div class="glass-panel p-2 rounded-lg flex flex-col">
-                <div class="flex">
-                    <input type="text" id="message-input" placeholder="輸入訊息..." maxlength="1000"
-                        class="flex-1 bg-transparent border-none text-white placeholder-white/70 focus:outline-none p-2">
+        <div class="p-4 relative">
+            <div id="input-container" class="glass-panel p-2 rounded-lg flex items-center relative">
+                <button id="emoji-btn" class="emoji-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </button>
+                <label for="file-input" class="upload-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </label>
+                <input type="file" id="file-input" class="file-input" accept="image/*">
+                <div class="flex-1">
+                    <input type="text" id="message-input" placeholder="輸入訊息..." maxlength="250"
+                        class="bg-transparent border-none text-white placeholder-white/70 focus:outline-none p-2 w-full">
+                </div>
+                <div class="send-btn-container">
                     <button id="send-btn" class="bg-white text-purple-600 px-4 py-2 rounded-lg font-medium hover:bg-opacity-90">
                         發送
                     </button>
+                    <div class="char-counter"><span id="message-char-count">0</span>/250</div>
                 </div>
-                <div id="message-counter" class="char-counter px-2">0/1000</div>
-                <div id="cooldown-container" class="cooldown-container">
-                    <div id="cooldown-bar" class="cooldown-bar"></div>
+                
+                <!-- 冷卻時間覆蓋層 -->
+                <div id="cooldown-overlay" class="cooldown-overlay hidden">
+                    <div class="cooldown-text">請等待 <span id="cooldown-timer">3</span> 秒</div>
+                </div>
+            </div>
+            
+            <!-- 表情符號選擇器 -->
+            <div id="emoji-picker" class="emoji-picker hidden">
+                <div class="emoji">😀</div>
+                <div class="emoji">😂</div>
+                <div class="emoji">🥰</div>
+                <div class="emoji">😍</div>
+                <div class="emoji">😎</div>
+                <div class="emoji">🤔</div>
+                <div class="emoji">😊</div>
+                <div class="emoji">😢</div>
+                <div class="emoji">😭</div>
+                <div class="emoji">😡</div>
+                <div class="emoji">👍</div>
+                <div class="emoji">👎</div>
+                <div class="emoji">❤️</div>
+                <div class="emoji">🔥</div>
+                <div class="emoji">🎉</div>
+                <div class="emoji">🙏</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 設定彈窗 -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-800">設定</h2>
+                <button id="close-settings-btn" class="text-gray-500 hover:text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="flex border-b">
+                <div class="tab-button active" data-tab="nickname">暱稱</div>
+                <div class="tab-button" data-tab="background">背景</div>
+            </div>
+            
+            <div id="nickname-tab" class="tab-content active">
+                <p class="text-gray-600 mb-4">更改您的暱稱（最多15個字）</p>
+                <input type="text" id="new-nickname-input" placeholder="輸入新暱稱..." maxlength="15"
+                    class="w-full p-2 border border-gray-300 rounded-lg mb-1 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <div class="char-counter text-gray-500 text-right mb-4"><span id="new-nickname-char-count">0</span>/15</div>
+                <div class="flex justify-end">
+                    <button id="update-nickname-btn" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">更新暱稱</button>
+                </div>
+            </div>
+            
+            <div id="background-tab" class="tab-content">
+                <p class="text-gray-600 mb-4">選擇聊天背景</p>
+                <div class="space-y-3">
+                    <div class="bg-option selected" data-bg="default">
+                        <div class="bg-preview" style="background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);"></div>
+                        <div class="bg-name">預設紫色</div>
+                    </div>
+                    <div class="bg-option" data-bg="deep-blue">
+                        <div class="bg-preview" style="background-image: linear-gradient(to right, #0f2027, #203a43, #2c5364);"></div>
+                        <div class="bg-name">深海藍</div>
+                    </div>
+                    <div class="bg-option" data-bg="space">
+                        <div class="bg-preview" style="background-color: #000000;"></div>
+                        <div class="bg-name">太空星空</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 設定面板 -->
-    <div id="settings-panel" class="settings-panel glass-panel p-6">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-xl font-bold text-white">設定</h2>
-            <button id="close-settings" class="text-white hover:bg-white/20 p-2 rounded-full">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
-        
-        <div class="mb-6">
-            <h3 class="text-white text-lg mb-3">背景選擇</h3>
-            <div class="grid grid-cols-1 gap-4">
-                <div class="bg-option active p-2 rounded-lg" data-bg="default">
-                    <div class="h-20 rounded bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center">
-                        <span class="text-white font-medium">預設漸層</span>
-                    </div>
-                </div>
-                <div class="bg-option p-2 rounded-lg" data-bg="space">
-                    <div class="h-20 rounded bg-black flex items-center justify-center relative overflow-hidden">
-                        <div class="star" style="width: 2px; height: 2px; top: 20%; left: 10%;"></div>
-                        <div class="star" style="width: 1px; height: 1px; top: 30%; left: 20%; animation-delay: 1s;"></div>
-                        <div class="star" style="width: 2px; height: 2px; top: 50%; left: 30%; animation-delay: 2s;"></div>
-                        <div class="star" style="width: 1px; height: 1px; top: 70%; left: 40%; animation-delay: 0.5s;"></div>
-                        <span class="text-white font-medium z-10">太空星空</span>
-                    </div>
-                </div>
-                <div class="bg-option p-2 rounded-lg" data-bg="geometric">
-                    <div class="h-20 rounded bg-geometric flex items-center justify-center">
-                        <span class="text-white font-medium">幾何圖形</span>
-                    </div>
-                </div>
-                <div class="bg-option p-2 rounded-lg" data-bg="tech">
-                    <div class="h-20 rounded bg-tech flex items-center justify-center relative overflow-hidden">
-                        <div class="tech-circuit"></div>
-                        <span class="text-white font-medium z-10">科技風格</span>
-                    </div>
-                </div>
-                <div class="bg-option p-2 rounded-lg" data-bg="nature">
-                    <div class="h-20 rounded bg-nature flex items-center justify-center relative overflow-hidden">
-                        <div class="nature-overlay"></div>
-                        <span class="text-white font-medium z-10">森林自然</span>
-                    </div>
-                </div>
-                <div class="bg-option p-2 rounded-lg" data-bg="neon">
-                    <div class="h-20 rounded bg-neon flex items-center justify-center relative overflow-hidden">
-                        <div class="neon-grid"></div>
-                        <div class="neon-glow"></div>
-                        <span class="text-white font-medium z-10">霓虹城市</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="mb-6">
-            <h3 class="text-white text-lg mb-3">更改暱稱</h3>
-            <div class="flex flex-col">
-                <div class="flex">
-                    <input type="text" id="change-nickname" placeholder="新的暱稱" maxlength="30"
-                        class="flex-1 p-2 rounded-l-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none">
-                    <button id="update-nickname" class="bg-white text-purple-600 px-4 py-2 rounded-r-lg font-medium hover:bg-opacity-90">
-                        更新
-                    </button>
-                </div>
-                <div id="change-nickname-counter" class="char-counter mt-1">0/30</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 星空背景的星星 -->
-    <div id="stars-container" class="fixed inset-0 pointer-events-none hidden"></div>
-    
-    <!-- 科技風格背景元素 -->
-    <div id="tech-container" class="fixed inset-0 pointer-events-none hidden">
-        <div class="tech-circuit"></div>
-    </div>
-    
-    <!-- 森林自然背景元素 -->
-    <div id="nature-container" class="fixed inset-0 pointer-events-none hidden">
-        <div class="nature-overlay"></div>
-    </div>
-    
-    <!-- 霓虹城市背景元素 -->
-    <div id="neon-container" class="fixed inset-0 pointer-events-none hidden">
-        <div class="neon-grid"></div>
-        <div class="neon-glow"></div>
-    </div>
-
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 初始化 Socket.IO（替換為您的 Render 後端 URL）
-            const socket = io('https://anonymous-chat-backend-6w6a.onrender.com'); // TODO: 更新為實際 Render URL
-
             // 元素
             const welcomeModal = document.getElementById('welcome-modal');
-            const agreeBtn = document.getElementById('agree-btn');
-            const nicknameScreen = document.getElementById('nickname-screen');
-            const chatScreen = document.getElementById('chat-screen');
+            const acceptRulesBtn = document.getElementById('accept-rules-btn');
+            const nicknameModal = document.getElementById('nickname-modal');
             const nicknameInput = document.getElementById('nickname-input');
-            const nicknameCounter = document.getElementById('nickname-counter');
-            const startChatBtn = document.getElementById('start-chat-btn');
-            const userNickname = document.getElementById('user-nickname');
+            const nicknameCharCount = document.getElementById('nickname-char-count');
+            const saveNicknameBtn = document.getElementById('save-nickname-btn');
+            const loadingScreen = document.getElementById('loading-screen');
+            const chatInterface = document.getElementById('chat-interface');
             const messageInput = document.getElementById('message-input');
-            const messageCounter = document.getElementById('message-counter');
+            const messageCharCount = document.getElementById('message-char-count');
             const sendBtn = document.getElementById('send-btn');
             const messagesContainer = document.getElementById('messages');
+            const emojiBtn = document.getElementById('emoji-btn');
+            const emojiPicker = document.getElementById('emoji-picker');
+            const emojis = document.querySelectorAll('.emoji');
             const settingsBtn = document.getElementById('settings-btn');
-            const settingsPanel = document.getElementById('settings-panel');
-            const closeSettings = document.getElementById('close-settings');
+            const settingsModal = document.getElementById('settings-modal');
+            const closeSettingsBtn = document.getElementById('close-settings-btn');
+            const newNicknameInput = document.getElementById('new-nickname-input');
+            const newNicknameCharCount = document.getElementById('new-nickname-char-count');
+            const updateNicknameBtn = document.getElementById('update-nickname-btn');
+            const currentNickname = document.getElementById('current-nickname');
+            const fileInput = document.getElementById('file-input');
+            const imagePreviewContainer = document.getElementById('image-preview-container');
+            const imagePreview = document.getElementById('image-preview');
+            const cancelImage = document.getElementById('cancel-image');
+            const replyPreview = document.getElementById('reply-preview');
+            const replyTo = document.getElementById('reply-to');
+            const cancelReply = document.getElementById('cancel-reply');
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
             const bgOptions = document.querySelectorAll('.bg-option');
-            const changeNicknameInput = document.getElementById('change-nickname');
-            const changeNicknameCounter = document.getElementById('change-nickname-counter');
-            const updateNicknameBtn = document.getElementById('update-nickname');
-            const starsContainer = document.getElementById('stars-container');
-            const techContainer = document.getElementById('tech-container');
-            const natureContainer = document.getElementById('nature-container');
-            const neonContainer = document.getElementById('neon-container');
-            const alertModal = document.getElementById('alert-modal');
-            const alertMessage = document.getElementById('alert-message');
-            const alertCloseBtn = document.getElementById('alert-close-btn');
-            const cooldownContainer = document.getElementById('cooldown-container');
-            const cooldownBar = document.getElementById('cooldown-bar');
+            const starsContainer = document.getElementById('stars');
+            const cooldownOverlay = document.getElementById('cooldown-overlay');
+            const cooldownTimer = document.getElementById('cooldown-timer');
+            const inputContainer = document.getElementById('input-container');
 
-            // 用戶資料
-            let userData = {
-                nickname: '',
-                background: 'default'
-            };
+            // Socket.IO 連線
+            const socket = io('https://anonymous-chat-backend-6w6a.onrender.com');
 
-            // 冷卻時間
-            const cooldownTime = 3000;
-            let cooldownTimer = null;
+            // 當前用戶暱稱
+            let nickname = '訪客';
+            let replyingTo = null;
+            let currentImage = null;
+            let isCooldown = false;
+            let cooldownSeconds = 3;
+            let cooldownInterval;
+
+            // 檢查是否首次使用
+            const isFirstVisit = !localStorage.getItem('hasVisitedBefore');
+
+            // 接受規則按鈕
+            acceptRulesBtn.addEventListener('click', function() {
+                localStorage.setItem('hasVisitedBefore', 'true');
+                welcomeModal.classList.add('hidden');
+                nicknameModal.classList.remove('hidden');
+            });
+
+            // 如果是首次訪問，顯示歡迎規則彈窗，否則直接顯示暱稱設定
+            if (isFirstVisit) {
+                welcomeModal.classList.remove('hidden');
+            } else {
+                nicknameModal.classList.remove('hidden');
+            }
 
             // 字數計數器
-            function updateCharCounter(input, counter, maxLength) {
-                const length = input.value.length;
-                counter.textContent = `${length}/${maxLength}`;
-                if (length >= maxLength) {
-                    counter.classList.add('limit');
-                } else {
-                    counter.classList.remove('limit');
-                }
-            }
-
-            // 暱稱輸入計數
             nicknameInput.addEventListener('input', function() {
-                updateCharCounter(this, nicknameCounter, 30);
+                nicknameCharCount.textContent = this.value.length;
             });
 
-            // 訊息輸入計數
             messageInput.addEventListener('input', function() {
-                updateCharCounter(this, messageCounter, 1000);
+                messageCharCount.textContent = this.value.length;
             });
 
-            // 更改暱稱輸入計數
-            changeNicknameInput.addEventListener('input', function() {
-                updateCharCounter(this, changeNicknameCounter, 30);
+            newNicknameInput.addEventListener('input', function() {
+                newNicknameCharCount.textContent = this.value.length;
             });
 
-            // 顯示警告通知
-            function showAlert(message) {
-                alertMessage.textContent = message;
-                alertModal.classList.remove('hidden');
-                alertModal.querySelector('.alert-content').classList.add('shake');
-            }
-
-            // 關閉警告通知
-            alertCloseBtn.addEventListener('click', function() {
-                alertModal.classList.add('hidden');
-                alertModal.querySelector('.alert-content').classList.remove('shake');
-            });
-
-            // 開始冷卻倒數
-            function startCooldown() {
-                cooldownContainer.style.display = 'block';
-                cooldownBar.style.animation = 'none';
-                cooldownBar.style.width = '100%';
-                cooldownBar.style.transition = `width ${cooldownTime / 1000}s linear`;
-                cooldownBar.offsetHeight;
-                cooldownBar.style.width = '0%';
-
-                if (cooldownTimer) {
-                    clearTimeout(cooldownTimer);
-                }
-
-                cooldownTimer = setTimeout(() => {
-                    cooldownContainer.style.display = 'none';
-                    sendBtn.disabled = false;
-                    sendBtn.classList.remove('btn-disabled');
-                }, cooldownTime);
-            }
-
-            // 添加訊息到聊天區
-            function addMessage(sender, text, isUser = false) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${isUser ? 'message-user' : 'message-other'}`;
-                
-                const senderSpan = document.createElement('span');
-                senderSpan.className = 'text-xs opacity-70';
-                senderSpan.textContent = sender;
-                
-                const textDiv = document.createElement('div');
-                textDiv.textContent = text;
-                
-                messageDiv.appendChild(senderSpan);
-                messageDiv.appendChild(textDiv);
-                messagesContainer.appendChild(messageDiv);
-                
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
-
-            // 添加系統訊息
-            function addSystemMessage(text) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'message message-other';
-                
-                const senderSpan = document.createElement('span');
-                senderSpan.className = 'text-xs opacity-70';
-                senderSpan.textContent = '系統';
-                
-                const textDiv = document.createElement('div');
-                textDiv.textContent = text;
-                
-                messageDiv.appendChild(senderSpan);
-                messageDiv.appendChild(textDiv);
-                messagesContainer.appendChild(messageDiv);
-                
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
-
-            // 歡迎提示框
-            agreeBtn.addEventListener('click', function() {
-                welcomeModal.style.opacity = '0';
-                welcomeModal.style.transition = 'opacity 0.3s ease';
-                
-                setTimeout(() => {
-                    welcomeModal.style.display = 'none';
-                    nicknameScreen.classList.remove('hidden');
-                    nicknameInput.focus();
-                    localStorage.setItem('anonymousChatAgreed', 'true');
-                }, 300);
-            });
-
-            // 檢查是否已經同意過規則
-            if (localStorage.getItem('anonymousChatAgreed') === 'true') {
-                welcomeModal.style.display = 'none';
-                nicknameScreen.classList.remove('hidden');
-            }
-
-            // 開始聊天
-            startChatBtn.addEventListener('click', function() {
-                const nickname = nicknameInput.value.trim();
-                if (!nickname) {
-                    showAlert('請輸入暱稱！');
-                    return;
-                }
-
-                socket.emit('join', nickname, (response) => {
-                    if (response.success) {
-                        userData.nickname = nickname;
-                        userNickname.textContent = nickname;
-                        nicknameScreen.classList.add('hidden');
-                        chatScreen.classList.remove('hidden');
-                    } else {
-                        showAlert(response.message);
-                    }
-                });
-            });
-
-            // 發送訊息
-            function sendMessage() {
-                const message = messageInput.value.trim();
-                if (message) {
-                    sendBtn.disabled = true;
-                    sendBtn.classList.add('btn-disabled');
-                    socket.emit('send-message', message, (response) => {
-                        if (response.success) {
-                            addMessage(userData.nickname, message, true);
-                            messageInput.value = '';
-                            updateCharCounter(messageInput, messageCounter, 1000);
-                            startCooldown();
-                        } else {
-                            showAlert(response.message);
-                            sendBtn.disabled = false;
-                            sendBtn.classList.remove('btn-disabled');
-                        }
-                    });
-                }
-            }
-
-            sendBtn.addEventListener('click', sendMessage);
-            messageInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    sendMessage();
-                }
-            });
-
-            // 接收聊天訊息
-            socket.on('chat-message', ({ sender, text }) => {
-                addMessage(sender, text, sender === userData.nickname);
-            });
-
-            // 接收系統訊息
-            socket.on('system-message', (text) => {
-                addSystemMessage(text);
-            });
-
-            // 設定面板
-            settingsBtn.addEventListener('click', function() {
-                settingsPanel.classList.add('open');
-            });
-
-            closeSettings.addEventListener('click', function() {
-                settingsPanel.classList.remove('open');
-            });
-
-            // 創建星星背景
+            // 創建星星
             function createStars() {
                 starsContainer.innerHTML = '';
-                starsContainer.classList.remove('hidden');
-                const starCount = window.innerWidth < 768 ? 50 : 100;
-                for (let i = 0; i < starCount; i++) {
+                const starsCount = 200;
+                for (let i = 0; i < starsCount; i++) {
                     const star = document.createElement('div');
                     star.className = 'star';
-                    const size = Math.random() * 2 + 1;
+                    const x = Math.random() * 100;
+                    const y = Math.random() * 100;
+                    const size = Math.random() * 2;
+                    const duration = 1 + Math.random() * 3;
+                    star.style.left = `${x}%`;
+                    star.style.top = `${y}%`;
                     star.style.width = `${size}px`;
                     star.style.height = `${size}px`;
-                    star.style.top = `${Math.random() * 100}%`;
-                    star.style.left = `${Math.random() * 100}%`;
-                    star.style.animationDelay = `${Math.random() * 4}s`;
+                    star.style.animation = `twinkle ${duration}s infinite ease-in-out`;
+                    star.style.animationDelay = `${Math.random() * 3}s`;
                     starsContainer.appendChild(star);
                 }
             }
 
-            // 隱藏所有背景容器
-            function hideAllBackgroundContainers() {
+            // 切換背景
+            function changeBackground(bgType) {
                 starsContainer.classList.add('hidden');
-                techContainer.classList.add('hidden');
-                natureContainer.classList.add('hidden');
-                neonContainer.classList.add('hidden');
+                switch(bgType) {
+                    case 'default':
+                        document.body.style.backgroundColor = '#4158D0';
+                        document.body.style.backgroundImage = 'linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%)';
+                        break;
+                    case 'deep-blue':
+                        document.body.style.backgroundColor = '#0f2027';
+                        document.body.style.backgroundImage = 'linear-gradient(to right, #0f2027, #203a43, #2c5364)';
+                        break;
+                    case 'space':
+                        document.body.style.backgroundColor = '#000000';
+                        document.body.style.backgroundImage = 'none';
+                        starsContainer.classList.remove('hidden');
+                        break;
+                }
             }
 
-            // 背景選擇
-            bgOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    const bg = this.getAttribute('data-bg');
-                    bgOptions.forEach(opt => opt.classList.remove('active'));
-                    this.classList.add('active');
-                    document.body.className = '';
-                    hideAllBackgroundContainers();
-                    if (bg === 'default') {
-                        document.body.classList.add('bg-gradient-to-br', 'from-purple-600', 'to-blue-500');
-                    } else if (bg === 'space') {
-                        document.body.classList.add('bg-black');
-                        createStars();
-                    } else if (bg === 'tech') {
-                        document.body.classList.add('bg-tech');
-                        techContainer.classList.remove('hidden');
-                    } else if (bg === 'nature') {
-                        document.body.classList.add('bg-nature');
-                        natureContainer.classList.remove('hidden');
-                    } else if (bg === 'neon') {
-                        document.body.classList.add('bg-neon');
-                        neonContainer.classList.remove('hidden');
-                    } else {
-                        document.body.classList.add(`bg-${bg}`);
+            // 啟動冷卻時間
+            function startCooldown() {
+                isCooldown = true;
+                cooldownSeconds = 3;
+                cooldownTimer.textContent = cooldownSeconds;
+                cooldownOverlay.classList.remove('hidden');
+                cooldownInterval = setInterval(() => {
+                    cooldownSeconds--;
+                    cooldownTimer.textContent = cooldownSeconds;
+                    if (cooldownSeconds <= 0) {
+                        clearInterval(cooldownInterval);
+                        isCooldown = false;
+                        cooldownOverlay.classList.add('hidden');
                     }
-                    userData.background = bg;
+                }, 1000);
+            }
+
+            // 儲存暱稱並加入聊天室
+            saveNicknameBtn.addEventListener('click', function() {
+                const newNickname = nicknameInput.value.trim();
+                if (newNickname) {
+                    nickname = newNickname;
+                    currentNickname.textContent = nickname;
+                    nicknameModal.classList.add('hidden');
+                    loadingScreen.classList.remove('hidden');
+                    socket.emit('join', nickname, (response) => {
+                        if (response.success) {
+                            loadingScreen.classList.add('hidden');
+                            chatInterface.classList.remove('hidden');
+                        } else {
+                            alert(response.message);
+                            nicknameModal.classList.remove('hidden');
+                            loadingScreen.classList.add('hidden');
+                        }
+                    });
+                }
+            });
+
+            nicknameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') saveNicknameBtn.click();
+            });
+
+            // 設定按鈕
+            settingsBtn.addEventListener('click', function() {
+                newNicknameInput.value = nickname;
+                newNicknameCharCount.textContent = nickname.length;
+                settingsModal.classList.remove('hidden');
+            });
+
+            closeSettingsBtn.addEventListener('click', function() {
+                settingsModal.classList.add('hidden');
+            });
+
+            // 標籤切換
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    this.classList.add('active');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
                 });
             });
 
             // 更新暱稱
             updateNicknameBtn.addEventListener('click', function() {
-                const newNickname = changeNicknameInput.value.trim();
+                const newNickname = newNicknameInput.value.trim();
                 if (newNickname) {
-                    socket.emit('update-nickname', newNickname, (response) => {
-                        if (response.success) {
-                            userData.nickname = response.newNickname;
-                            userNickname.textContent = response.newNickname;
-                            changeNicknameInput.value = '';
-                            updateCharCounter(changeNicknameInput, changeNicknameCounter, 30);
-                            settingsPanel.classList.remove('open');
-                        } else {
-                            showAlert(response.message);
-                        }
-                    });
+                    const oldNickname = nickname;
+                    nickname = newNickname;
+                    currentNickname.textContent = nickname;
+                    socket.emit('update-nickname', { oldNickname, newNickname });
+                    settingsModal.classList.add('hidden');
                 }
             });
 
-            // 初始化字數計數器
-            updateCharCounter(nicknameInput, nicknameCounter, 30);
-            updateCharCounter(messageInput, messageCounter, 1000);
-            updateCharCounter(changeNicknameInput, changeNicknameCounter, 30);
+            newNicknameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') updateNicknameBtn.click();
+            });
 
-            // 初始化
-            if (localStorage.getItem('anonymousChatAgreed') === 'true') {
-                nicknameInput.focus();
+            // 背景選項
+            bgOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    bgOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    const bgType = this.getAttribute('data-bg');
+                    changeBackground(bgType);
+                });
+            });
+
+            // 表情符號選擇器
+            emojiBtn.addEventListener('click', function() {
+                emojiPicker.classList.toggle('hidden');
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('#emoji-picker') && !e.target.closest('#emoji-btn')) {
+                    emojiPicker.classList.add('hidden');
+                }
+            });
+
+            emojis.forEach(emoji => {
+                emoji.addEventListener('click', function() {
+                    messageInput.value += emoji.textContent;
+                    messageInput.focus();
+                    messageCharCount.textContent = messageInput.value.length;
+                });
+            });
+
+            // 圖片上傳
+            fileInput.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        currentImage = e.target.result;
+                        imagePreviewContainer.classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            cancelImage.addEventListener('click', function() {
+                imagePreviewContainer.classList.add('hidden');
+                fileInput.value = '';
+                currentImage = null;
+            });
+
+            cancelReply.addEventListener('click', function() {
+                replyPreview.classList.add('hidden');
+                replyingTo = null;
+            });
+
+            // 發送訊息
+            function sendMessage() {
+                if (isCooldown) return;
+
+                const message = messageInput.value.trim();
+                if (message || currentImage) {
+                    const payload = { text: message, image: currentImage, replyTo: replyingTo ? replyingTo.id : null };
+                    socket.emit('send-message', payload, (response) => {
+                        if (!response.success) alert(response.message);
+                    });
+
+                    messageInput.value = '';
+                    messageCharCount.textContent = '0';
+                    if (currentImage) {
+                        imagePreviewContainer.classList.add('hidden');
+                        fileInput.value = '';
+                        currentImage = null;
+                    }
+                    if (replyingTo) {
+                        replyPreview.classList.add('hidden');
+                        replyingTo = null;
+                    }
+                    startCooldown();
+                }
             }
+
+            sendBtn.addEventListener('click', sendMessage);
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            // 添加訊息到聊天區
+            function addMessage(sender, text, isUser = false, replyData = null, imageData = null) {
+                const messageId = 'msg-' + Date.now();
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isUser ? 'message-user' : 'message-other'} relative`;
+                messageDiv.id = messageId;
+
+                let messageContent = '';
+                if (replyData) {
+                    messageContent += `
+                        <div class="reply-container">
+                            <span class="reply-sender">${replyData.sender}:</span>
+                            <span class="reply-text">${replyData.text}</span>
+                        </div>
+                    `;
+                }
+                messageContent += `<span class="text-xs opacity-70">${sender}</span>`;
+                if (text) messageContent += `<div>${text}</div>`;
+                if (imageData) messageContent += `<img src="${imageData}" class="image-message" alt="圖片訊息">`;
+                messageContent += `
+                    <div class="message-options">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                        </svg>
+                        <div class="options-menu hidden">
+                            <div class="option-item reply-option" data-id="${messageId}" data-sender="${sender}" data-text="${text || '圖片訊息'}">回覆</div>
+                        </div>
+                    </div>
+                `;
+
+                messageDiv.innerHTML = messageContent;
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+                const optionsBtn = messageDiv.querySelector('.message-options');
+                const optionsMenu = messageDiv.querySelector('.options-menu');
+                optionsBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    optionsMenu.classList.toggle('hidden');
+                });
+
+                document.addEventListener('click', function() {
+                    document.querySelectorAll('.options-menu').forEach(menu => menu.classList.add('hidden'));
+                });
+
+                const replyOption = messageDiv.querySelector('.reply-option');
+                replyOption.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const id = this.getAttribute('data-id');
+                    const sender = this.getAttribute('data-sender');
+                    const text = this.getAttribute('data-text');
+                    replyingTo = { id, sender, text };
+                    replyTo.textContent = `回覆給 ${sender}: ${text.length > 20 ? text.substring(0, 20) + '...' : text}`;
+                    replyPreview.classList.remove('hidden');
+                    messageInput.focus();
+                    optionsMenu.classList.add('hidden');
+                });
+            }
+
+            // Socket.IO 事件
+            socket.on('connect', () => console.log('Connected to server'));
+            socket.on('disconnect', () => console.log('Disconnected from server'));
+
+            socket.on('system-message', (message) => {
+                addMessage('系統', message, false);
+            });
+
+            socket.on('chat-message', (data) => {
+                addMessage(data.sender, data.text, data.sender === nickname, data.replyTo, data.image);
+            });
+
+            socket.on('typing-indicator', (sender) => {
+                let typingDiv = document.querySelector('.typing-indicator');
+                if (!typingDiv) {
+                    typingDiv = document.createElement('div');
+                    typingDiv.className = 'message message-other';
+                    typingDiv.innerHTML = `
+                        <span class="text-xs opacity-70">${sender}</span>
+                        <div class="typing-indicator">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    `;
+                    messagesContainer.appendChild(typingDiv);
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }
+                setTimeout(() => typingDiv.remove(), 1500);
+            });
+
+            // 初始化星星
+            createStars();
+            changeBackground('default');
         });
     </script>
 </body>
