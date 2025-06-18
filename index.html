@@ -490,7 +490,7 @@
         <div class="flex justify-between items-center p-4 glass-panel m-2 rounded-lg">
             <div>
                 <h2 class="text-white font-medium">匿名聊</h2>
-                <p class="text-white/70 text-sm">線上人數：42</p>
+                <p id="online-count" class="text-white/70 text-sm">線上人數：0</p>
             </div>
             <div class="flex items-center">
                 <span id="current-nickname" class="text-white text-sm bg-purple-600 px-2 py-1 rounded-full mr-2">訪客</span>
@@ -683,6 +683,7 @@
             const cooldownOverlay = document.getElementById('cooldown-overlay');
             const cooldownTimer = document.getElementById('cooldown-timer');
             const inputContainer = document.getElementById('input-container');
+            const onlineCount = document.getElementById('online-count');
 
             // Socket.IO 連線
             const socket = io('https://anonymous-chat-backend-6w6a.onrender.com');
@@ -695,22 +696,14 @@
             let cooldownSeconds = 3;
             let cooldownInterval;
 
-            // 檢查是否首次使用
-            const isFirstVisit = !localStorage.getItem('hasVisitedBefore');
+            // 強制顯示歡迎規則
+            welcomeModal.classList.remove('hidden');
 
             // 接受規則按鈕
             acceptRulesBtn.addEventListener('click', function() {
-                localStorage.setItem('hasVisitedBefore', 'true');
                 welcomeModal.classList.add('hidden');
                 nicknameModal.classList.remove('hidden');
             });
-
-            // 如果是首次訪問，顯示歡迎規則彈窗，否則直接顯示暱稱設定
-            if (isFirstVisit) {
-                welcomeModal.classList.remove('hidden');
-            } else {
-                nicknameModal.classList.remove('hidden');
-            }
 
             // 字數計數器
             nicknameInput.addEventListener('input', function() {
@@ -1022,6 +1015,10 @@
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
                 }
                 setTimeout(() => typingDiv.remove(), 1500);
+            });
+
+            socket.on('update-online-count', (count) => {
+                onlineCount.textContent = `線上人數：${count}`;
             });
 
             // 初始化星星
